@@ -1,0 +1,54 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frontend Application</title>
+</head>
+<body>
+    <h1>Frontend Application</h1>
+
+    <div>
+        <label for="number1">Enter number 1:</label>
+        <input type="number" id="number1">
+    </div>
+
+    <div>
+        <label for="number2">Enter number 2:</label>
+        <input type="number" id="number2">
+    </div>
+
+    <button onclick="addNumbers()">Add Numbers</button>
+
+    <div id="result"></div>
+
+    <script>
+        async function addNumbers() {
+            const number1 = parseFloat(document.getElementById('number1').value);
+            const number2 = parseFloat(document.getElementById('number2').value);
+
+            const apiUrl = 'http://localhost:5000/api/calculator/add'; // Замените на фактический URL вашего API
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ number1, number2 })
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    document.getElementById('result').innerText = `Result: ${result}`;
+                } else {
+                    document.getElementById('result').innerText = 'Error occurred';
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('result').innerText = 'Error occurred';
+            }
+        }
+    </script>
+</body>
+</html>
